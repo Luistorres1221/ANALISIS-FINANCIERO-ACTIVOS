@@ -145,7 +145,7 @@ export class VisualizacionesPageComponent {
       }
       const cur = this.candleSymbol();
       if (!cur || !syms.includes(cur)) {
-        untracked(() => this.candleSymbol.set(syms.includes('AAPL') ? 'AAPL' : syms[0]));
+        untracked(() => this.candleSymbol.set(syms.includes('ECOPETROL') ? 'ECOPETROL' : syms[0]));
       }
     });
 

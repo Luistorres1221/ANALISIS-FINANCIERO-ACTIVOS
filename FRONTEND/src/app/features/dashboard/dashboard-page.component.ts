@@ -25,7 +25,7 @@ export class DashboardPageComponent {
       }
       const cur = this.priceChartSymbol();
       if (!cur || !syms.includes(cur)) {
-        this.priceChartSymbol.set(syms.includes('AAPL') ? 'AAPL' : syms[0]);
+        this.priceChartSymbol.set(syms.includes('ECOPETROL') ? 'ECOPETROL' : syms[0]);
       }
     });
   }
@@ -73,8 +73,8 @@ export class DashboardPageComponent {
     const syms = this.status.symbols();
     const picked = this.priceChartSymbol();
     const sym =
-      picked && syms.includes(picked) ? picked : syms.includes('AAPL') ? 'AAPL' : syms[0] ?? 'AAPL';
-    // API: columnas OHLC por símbolo (`AAPL_close`, no `AAPL`) — ver ETLServiceImpl.unifyData.
+      picked && syms.includes(picked) ? picked : syms.includes('ECOPETROL') ? 'ECOPETROL' : syms[0] ?? 'ECOPETROL';
+    // API: columnas OHLC por símbolo (`ECOPETROL_close`, no `ECOPETROL`) — ver ETLServiceImpl.unifyData.
     const closeKey = `${sym}_close`;
     const slice = ds.slice(-90);
     return {
