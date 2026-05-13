@@ -34,10 +34,7 @@ public class ETLServiceImpl implements ETLService {
     private final DatasetWriter datasetWriter;
 
     private static final List<String> PORTFOLIO_SYMBOLS = List.of(
-            "AAPL", "MSFT", "GOOG", "AMZN", "TSLA",
-            "META", "NVDA", "JPM", "WMT", "DIS",
-            "NFLX", "KO", "PEP", "INTC", "BAC",
-            "CSCO", "ORCL", "IBM", "AMD", "ADBE"
+            "ECOPETROL", "GRUPOSURA", "NUTRESA", "CEMARGOS", "BANCOLOMBIA"
     );
     
     private final SimilarityService similarityService;
