@@ -36,8 +36,8 @@ export class OrdenamientoPageComponent implements OnInit {
           {
             label: 'Tiempo',
             data: list.map((x) => x.time),
-            backgroundColor: 'rgba(56, 189, 248, 0.45)',
-            borderColor: 'rgba(56, 189, 248, 0.9)',
+            backgroundColor: 'rgba(255, 167, 95, 0.45)',
+            borderColor: 'rgba(255, 167, 95, 0.9)',
             borderWidth: 1,
           },
         ],
@@ -103,7 +103,7 @@ export class OrdenamientoPageComponent implements OnInit {
       maintainAspectRatio: false,
       plugins: {
         legend: {
-          labels: { color: '#9fb0c3' },
+          labels: { color: '#dec7ad' },
         },
         title: {
           display: true,
@@ -111,10 +111,15 @@ export class OrdenamientoPageComponent implements OnInit {
             sampleSize != null
               ? `Tiempos de menor a mayor (izq. → der.), n = ${sampleSize}`
               : 'Tiempos de menor a mayor (izquierda a derecha)',
-          color: '#9fb0c3',
+          color: '#dec7ad',
           font: { size: 13 },
         },
         tooltip: {
+          backgroundColor: 'rgba(35, 17, 6, 0.92)',
+          titleColor: '#f7ede1',
+          bodyColor: '#e5d6c1',
+          borderColor: 'rgba(255, 159, 67, 0.35)',
+          borderWidth: 1,
           callbacks: {
             label: (ctx) => {
               const v = ctx.raw;
@@ -127,21 +132,21 @@ export class OrdenamientoPageComponent implements OnInit {
       scales: {
         x: {
           ticks: {
-            color: '#7d8ea3',
+            color: '#dec7ad',
             maxRotation: 45,
             minRotation: 35,
             autoSkip: false,
           },
-          grid: { color: 'rgba(148,163,184,0.12)' },
+          grid: { color: 'rgba(227,181,134,0.14)' },
         },
         y: {
           title: {
             display: true,
             text: 'Tiempo (Nanosegundos)',
-            color: '#7d8ea3',
+            color: '#dec7ad',
           },
-          ticks: { color: '#7d8ea3' },
-          grid: { color: 'rgba(148,163,184,0.12)' },
+          ticks: { color: '#dec7ad' },
+          grid: { color: 'rgba(227,181,134,0.14)' },
         },
       },
     };

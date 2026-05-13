@@ -1,20 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap');
 
 :root {
-  --bg: #081826;
-  --surface-0: #0f2946;
-  --surface-1: #12345e;
-  --surface-2: #174b7a;
-  --border: #2d6f98;
-  --text: #f2f9ff;
-  --text-secondary: #c8e4ff;
-  --muted: #8db9d9;
-  --accent: #5de4ff;
-  --accent-2: #8d56ff;
-  --accent-3: #ff5cb3;
-  --success: #3fe175;
-  --warning: #ffd33d;
-  --danger: #ff6b6b;
+  --bg: #1f1208;
+  --surface-0: #2d180d;
+  --surface-1: #3f2413;
+  --surface-2: #54331f;
+  --border: #7b5236;
+  --text: #f7ede1;
+  --text-secondary: #dec7ad;
+  --muted: #b99c82;
+  --accent: #ff9f43;
+  --accent-2: #ff6f3b;
+  --accent-3: #ffb56b;
+  --success: #9dc18d;
+  --warning: #ffb703;
+  --danger: #e25a3c;
 }
 
 *,

@@ -57,16 +57,16 @@ export class SimilitudPageComponent {
         label: 'Relativo al máximo (forma)',
         data: barData,
         backgroundColor: [
-          'rgba(56, 189, 248, 0.55)',
-          'rgba(52, 211, 153, 0.55)',
-          'rgba(251, 191, 36, 0.55)',
-          'rgba(192, 132, 252, 0.7)',
+          'rgba(255, 167, 95, 0.55)',
+          'rgba(229, 90, 50, 0.55)',
+          'rgba(186, 147, 112, 0.55)',
+          'rgba(194, 133, 101, 0.7)',
         ],
         borderColor: [
-          'rgb(56, 189, 248)',
-          'rgb(52, 211, 153)',
-          'rgb(251, 191, 36)',
-          'rgb(192, 132, 252)',
+          'rgb(255, 167, 95)',
+          'rgb(229, 90, 50)',
+          'rgb(186, 147, 112)',
+          'rgb(194, 133, 101)',
         ],
         borderWidth: 1,
         borderSkipped: false,
@@ -79,8 +79,13 @@ export class SimilitudPageComponent {
       maintainAspectRatio: false,
       animation: { duration: 400 },
       plugins: {
-        legend: { labels: { color: '#9fb0c3' } },
+        legend: { labels: { color: '#dec7ad' } },
         tooltip: {
+          backgroundColor: 'rgba(35, 17, 6, 0.92)',
+          titleColor: '#f7ede1',
+          bodyColor: '#e5d6c1',
+          borderColor: 'rgba(255, 159, 67, 0.35)',
+          borderWidth: 1,
           callbacks: {
             label: (ctx) => {
               const i = ctx.dataIndex ?? 0;
@@ -90,11 +95,11 @@ export class SimilitudPageComponent {
         },
       },
       scales: {
-        x: { ticks: { color: '#7d8ea3' }, grid: { color: 'rgba(148,163,184,0.12)' } },
+        x: { ticks: { color: '#dec7ad' }, grid: { color: 'rgba(227,181,134,0.14)' } },
         y: {
           beginAtZero: true,
-          ticks: { color: '#7d8ea3' },
-          grid: { color: 'rgba(148,163,184,0.12)' },
+          ticks: { color: '#dec7ad' },
+          grid: { color: 'rgba(227,181,134,0.14)' },
           max: 100,
         },
       },
@@ -220,16 +225,16 @@ export class SimilitudPageComponent {
           {
             label: 'Retornos ' + asset1,
             data: s1,
-            borderColor: 'rgba(56, 189, 248, 0.95)',
-            backgroundColor: 'rgba(56, 189, 248, 0.1)',
+            borderColor: 'rgba(255, 167, 95, 0.95)',
+            backgroundColor: 'rgba(255, 167, 95, 0.1)',
             pointRadius: 0,
             tension: 0.2,
           },
           {
             label: 'Retornos ' + asset2,
             data: s2,
-            borderColor: 'rgba(251, 191, 36, 0.95)',
-            backgroundColor: 'rgba(251, 191, 36, 0.1)',
+            borderColor: 'rgba(229, 90, 50, 0.95)',
+            backgroundColor: 'rgba(229, 90, 50, 0.1)',
             pointRadius: 0,
             tension: 0.2,
           },
@@ -240,8 +245,13 @@ export class SimilitudPageComponent {
         maintainAspectRatio: false,
         interaction: { mode: 'index', intersect: false },
         plugins: {
-          legend: { labels: { color: '#9fb0c3' } },
+          legend: { labels: { color: '#dec7ad' } },
           tooltip: {
+            backgroundColor: 'rgba(35, 17, 6, 0.92)',
+            titleColor: '#f7ede1',
+            bodyColor: '#e5d6c1',
+            borderColor: 'rgba(255, 159, 67, 0.35)',
+            borderWidth: 1,
             callbacks: {
               title: (items) => {
                 const i = items?.[0];
@@ -259,18 +269,18 @@ export class SimilitudPageComponent {
         scales: {
           x: {
             ticks: {
-              color: '#7d8ea3',
+              color: '#dec7ad',
               maxRotation: 0,
               autoSkip: true,
               maxTicksLimit: 10,
             },
-            grid: { color: 'rgba(148,163,184,0.12)' },
-            title: { display: true, text: 'Fecha', color: '#7d8ea3' },
+            grid: { color: 'rgba(227,181,134,0.14)' },
+            title: { display: true, text: 'Fecha', color: '#dec7ad' },
           },
           y: {
-            ticks: { color: '#7d8ea3' },
-            grid: { color: 'rgba(148,163,184,0.12)' },
-            title: { display: true, text: 'Retorno', color: '#7d8ea3' },
+            ticks: { color: '#dec7ad' },
+            grid: { color: 'rgba(227,181,134,0.14)' },
+            title: { display: true, text: 'Retorno', color: '#dec7ad' },
           },
         },
       },

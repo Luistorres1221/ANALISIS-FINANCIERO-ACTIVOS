@@ -1,70 +1,90 @@
-# Análisis financiero — ETL y dashboard
+# Análisis financiero — ETL y Dashboard
 
-Monorepo con **backend Spring Boot** (pipeline ETL, análisis y similitud) y **frontend Angular 21** (dashboard tipo fintech). El front consume la API REST bajo el prefijo `/etl` y puede refrescar datos de forma automática y bajo demanda.
+Proyecto compuesto por un **backend Java Spring Boot** y un **frontend Angular 21** para procesar datos financieros mediante un pipeline ETL y visualizar los resultados en un dashboard interactivo.
 
 ---
 
-## Qué se implementó
+## Descripción general
 
-- **Backend**: servicio ETL con estado global en memoria (dataset, retornos, resultados de análisis), control de concurrencia (`synchronized`), enum de estado (`IDLE`, `EJECUTANDO`, `LISTO`, `ERROR`), versión incremental de datos y timestamp de última actualización.
-- **API REST** documentada bajo `/etl`: estado, ejecución manual del ETL, símbolos, dataset, análisis, similitud y series de retornos; respuestas **503** coherentes cuando aún no hay datos tras un ETL.
-- **CORS** configurado para desarrollo con Angular en `http://localhost:4200`.
-- **ETL programado** (Spring `@Scheduled`): opcional y configurable en `application.properties` (arranque diferido, intervalo fijo tras cada ejecución completa).
-- **Frontend**: aplicación standalone con lazy loading por features (`dashboard`, `activos`, `similitud`, `analisis`), servicios de estado y polling, proxy en desarrollo hacia el backend, gráficas con Chart.js / ng2-charts, tema oscuro y barra superior con estado del ETL, refresco manual y ejecución del ETL desde la UI.
+Esta solución integra dos módulos principales:
 
-La lógica algorítmica del ETL, similitud y análisis permanece en **Java**; el Angular **visualiza y opera** esos resultados vía HTTP.
+- **BACK-END:** servicio Spring Boot que ejecuta el ETL, mantiene el estado en memoria y expone una API REST para análisis.
+- **FRONT-END:** aplicación Angular que consume los datos del backend y presenta un dashboard con métricas, tablas y gráficas.
+
+El frontend utiliza rutas por feature y un esquema de estilo centralizado para mantener consistencia visual.
+
+---
+
+## Características principales
+
+- Ejecución de pipeline ETL con control de estado y concurrencia.
+- API REST `/etl` para consulta de estado, ejecución de ETL y recuperación de resultados.
+- Dashboard financiero con:
+  - métricas clave
+  - gráficas de series temporales
+  - comparaciones de similitud
+  - tablas ordenables y filtros.
+- Desarrollo con proxy para integración local entre Angular y Spring Boot.
+- Paleta de colores actualizada en el frontend para una presentación más vibrante.
 
 ---
 
 ## Estructura del repositorio
 
-| Carpeta | Rol |
-|--------|-----|
-| `BACK-END/` | Spring Boot: ETL, similitud, análisis, API REST |
-| `FRONT-END/` | Angular 21: dashboard, tablas, gráficas, estado global |
+| Carpeta | Contenido |
+| --- | --- |
+| `BACK-END/` | Servicio Spring Boot, lógica ETL, endpoints REST. |
+| `FRONT-END/` | Aplicación Angular 21, UI y consumo de la API. |
+| `CONTEXTO-IMPLEMENTACION.md` | Detalles de diseño y arquitectura. |
+| `Contexto-proyecto.sty` | Documento adicional en formato LaTeX. |
 
 ---
 
-## Cómo funciona (flujo general)
+## API del backend
 
-1. El **backend** expone el estado ligero en `GET /etl/status` (ETL ejecutado, estado, última actualización, versión).
-2. **`GET /etl/run`** lanza el pipeline ETL de forma **síncrona** (puede tardar; incluye descargas y pausas según la implementación).
-3. Tras un ETL exitoso, en memoria quedan el dataset unificado, retornos y resultados usados por análisis y similitud.
-4. El **frontend** hace polling periódico a `/etl/status`. Si el estado es `LISTO` y el ETL se ha ejecutado, carga datos pesados (símbolos, dataset, análisis) sin solapar dos cargas simultáneas (`refreshLock`). Mientras el estado es `EJECUTANDO`, no se disparan esas peticiones pesadas.
-5. Las rutas `/dashboard`, `/activos`, `/similitud` y `/analisis` muestran métricas, tablas filtrables/ordenables y gráficas según los endpoints disponibles.
-
----
-
-## API del backend (`/etl`)
+El backend expone los siguientes endpoints bajo `/etl`:
 
 | Método | Ruta | Descripción |
-|--------|------|-------------|
-| `GET` | `/etl/status` | Estado del ETL, timestamp, versión (respuesta ligera). |
-| `GET` | `/etl/run` | Ejecuta el pipeline ETL (síncrono). |
-| `GET` | `/etl/symbols` | Lista de tickers del portafolio. |
-| `GET` | `/etl/dataset` | Dataset unificado; fechas en ISO `yyyy-MM-dd`. **503** si no hay datos listos. |
-| `GET` | `/etl/analysis` | Análisis (ranking, volatilidad, riesgo, patrones). **503** si no hay datos. |
-| `GET` | `/etl/similarity?asset1=&asset2=` | Métricas de similitud. **503** si no hay datos. |
-| `GET` | `/etl/series?asset1=&asset2=` | Series de retornos alineadas. **503** si no hay datos. |
+| --- | --- | --- |
+| `GET` | `/etl/status` | Estado del ETL, última actualización y versión de datos. |
+| `GET` | `/etl/run` | Ejecuta manualmente el pipeline ETL. |
+| `GET` | `/etl/symbols` | Lista de activos disponibles. |
+| `GET` | `/etl/dataset` | Dataset consolidado con series históricas. |
+| `GET` | `/etl/analysis` | Resultados de análisis financiero. |
+| `GET` | `/etl/similarity` | Métricas de similitud entre activos. |
+| `GET` | `/etl/series` | Series de retornos alineadas. |
 
-Puerto por defecto del servidor: **8080** (`application.properties`).
-
----
-
-## Frontend (resumen técnico)
-
-- **`core/`**: `EtlApiService` (llamadas a `/etl/*`), `AppStatusService` (polling, caché, `runEtlFromUi`, refresco forzado), manejo global de errores HTTP.
-- **`shared/`**: layout, modelos TypeScript (`etl.models.ts`), componentes reutilizables.
-- **Entornos**: en desarrollo suele usarse **proxy** (`proxy.conf.json`) para enviar `/etl` a `http://localhost:8080`; en producción, `apiUrl` apunta al host real del API.
-- **Auto-refresh**: intervalo configurable en `environment*.ts` (`autoRefreshIntervalMs`); la barra superior puede mostrar un texto del tipo “Auto cada X min” según ese valor.
+> Algunos endpoints pueden devolver `503` cuando no hay datos listos tras una ejecución de ETL.
 
 ---
 
-## Cómo ejecutar en local
+## Frontend — comportamiento
+
+- El frontend consulta `GET /etl/status` de manera periódica para mantener el estado sincronizado.
+- Cuando el ETL está en estado `LISTO`, carga datos de métricas, tablas y gráficas.
+- La UI permite iniciar el ETL y refrescar resultados desde el dashboard.
+- La paleta de colores del frontend se centraliza en `FRONT-END/src/styles.css`.
+
+---
+
+## Requisitos
+
+- Java 17+ compatible con Spring Boot.
+- Maven para el backend.
+- Node.js y npm para el frontend.
+
+---
+
+## Ejecución local
 
 ### Backend
 
-Desde `BACK-END/`, con Maven o desde el IDE, levantar Spring Boot en el puerto **8080**.
+```bash
+cd BACK-END
+./mvnw spring-boot:run
+```
+
+El servidor se inicia en `http://localhost:8080`.
 
 ### Frontend
 
@@ -74,31 +94,43 @@ npm install
 npm start
 ```
 
-Abrir la URL que indique el CLI (habitualmente `http://localhost:4200`).
-
-### Uso típico
-
-1. Asegurarse de que el backend está arriba.
-2. En la UI, usar **Ejecutar ETL** y esperar a que termine (la primera vez es obligatorio para tener datos).
-3. Navegar por dashboard, activos, similitud y análisis; el refresco automático seguirá sincronizando mientras la app esté abierta y el servidor en estado `LISTO`.
+Abrir `http://localhost:4200` en el navegador.
 
 ---
 
-## Ajustes frecuentes
+## Comandos útiles
 
-| Necesidad | Dónde |
-|-----------|--------|
-| Intervalo de auto-refresh en el front | `FRONT-END/src/environments/environment*.ts` → `autoRefreshIntervalMs` |
-| ETL programado en segundo plano | `BACK-END/src/main/resources/application.properties` → `etl.scheduled.enabled`, `etl.scheduled.initial-delay-ms`, `etl.scheduled.fixed-delay-ms` |
-| Origen CORS | Clase de configuración CORS en el backend (p. ej. otro host/puerto en producción) |
-| API en build de producción | `environment.ts` → `apiUrl` sin depender del proxy |
+- Construir el frontend:
+
+```bash
+cd FRONT-END
+npm run build
+```
+
+- Ejecutar pruebas unitarias del frontend:
+
+```bash
+cd FRONT-END
+npm test
+```
 
 ---
 
-## Documentación adicional
+## Configuraciones comunes
 
-En la raíz del repo, **`CONTEXTO-IMPLEMENTACION.md`** amplía detalles de implementación (clases, convenciones y comportamiento del polling).
+- Cambiar la URL del backend: `FRONT-END/src/environments/environment.ts` y `FRONT-END/src/environments/environment.production.ts`.
+- Modificar el proxy de desarrollo de Angular: `FRONT-END/proxy.conf.json`.
+- Ajustar el ETL programado: `BACK-END/src/main/resources/application.properties`.
 
 ---
 
-*Proyecto académico de análisis financiero con ETL y visualización en dashboard.*
+## Recursos adicionales
+
+- `CONTEXTO-IMPLEMENTACION.md`: documentación técnica detallada.
+- `Contexto-proyecto.sty`: archivo documental en LaTeX.
+
+---
+
+## Estado del proyecto
+
+Proyecto preparado para ejecución local con backend y frontend integrados. La arquitectura separa claramente el procesamiento ETL en Java del frontend de visualización en Angular.

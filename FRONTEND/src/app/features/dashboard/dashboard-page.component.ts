@@ -58,8 +58,8 @@ export class DashboardPageComponent {
           {
             label: 'Volatilidad anualizada',
             data: top.map((x) => x.volatilidad),
-            backgroundColor: 'rgba(56, 189, 248, 0.45)',
-            borderColor: 'rgba(56, 189, 248, 0.9)',
+            backgroundColor: 'rgba(255, 167, 95, 0.45)',
+            borderColor: 'rgba(255, 167, 95, 0.9)',
             borderWidth: 1,
           },
         ],
@@ -92,8 +92,8 @@ export class DashboardPageComponent {
               const n = typeof v === 'number' ? v : Number(v);
               return Number.isFinite(n) ? n : NaN;
             }),
-            borderColor: 'rgba(52, 211, 153, 0.95)',
-            backgroundColor: 'rgba(52, 211, 153, 0.12)',
+            borderColor: 'rgba(255, 167, 95, 0.95)',
+            backgroundColor: 'rgba(255, 167, 95, 0.12)',
             fill: true,
             tension: 0.25,
             pointRadius: 0,
@@ -110,17 +110,17 @@ export class DashboardPageComponent {
       maintainAspectRatio: false,
       plugins: {
         legend: {
-          labels: { color: '#9fb0c3' },
+          labels: { color: '#dec7ad' },
         },
       },
       scales: {
         x: {
-          ticks: { color: '#7d8ea3', maxRotation: 0 },
-          grid: { color: 'rgba(148,163,184,0.12)' },
+          ticks: { color: '#dec7ad', maxRotation: 0 },
+          grid: { color: 'rgba(227,181,134,0.14)' },
         },
         y: {
-          ticks: { color: '#7d8ea3' },
-          grid: { color: 'rgba(148,163,184,0.12)' },
+          ticks: { color: '#dec7ad' },
+          grid: { color: 'rgba(227,181,134,0.14)' },
         },
       },
     };
