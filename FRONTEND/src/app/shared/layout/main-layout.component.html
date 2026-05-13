@@ -39,11 +39,17 @@
         <span class="muted">{{ status.autoRefreshHint() }}</span>
       </div>
       <div class="topbar-actions">
+        <div class="user-info">
+          <span class="user-name">{{ authService.currentUserValue?.name }}</span>
+        </div>
         <button type="button" class="btn ghost" (click)="refresh()" [disabled]="status.syncState() === 'refreshing'">
           Refrescar
         </button>
         <button type="button" class="btn primary" (click)="runEtl()" [disabled]="runBusy() || status.etlStatus()?.estado === 'EJECUTANDO'">
           @if (runBusy()) { Ejecutando… } @else { Ejecutar ETL }
+        </button>
+        <button type="button" class="btn ghost logout-btn" (click)="logout()">
+          Cerrar Sesión
         </button>
       </div>
     </header>
