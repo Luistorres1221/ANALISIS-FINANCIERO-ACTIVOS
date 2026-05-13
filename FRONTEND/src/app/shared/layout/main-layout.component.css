@@ -195,3 +195,29 @@
   padding: 1.25rem;
   overflow: auto;
 }
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 0.9rem;
+  background: var(--surface-1);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  font-size: 0.85rem;
+}
+
+.user-name {
+  font-weight: 500;
+  color: var(--text);
+}
+
+.logout-btn {
+  color: var(--danger);
+  border-color: var(--danger);
+}
+
+.logout-btn:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--danger) 15%, transparent);
+  color: var(--danger);
+}

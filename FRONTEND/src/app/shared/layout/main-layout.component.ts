@@ -1,7 +1,8 @@
 import { Component, DestroyRef, OnInit, inject, signal } from '@angular/core';
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { AppStatusService } from '../../core/services/app-status.service';
 import { GlobalErrorService } from '../../core/services/global-error.service';
+import { AuthenticationService } from '../../core/services/authentication.service';
 
 @Component({
   selector: 'app-main-layout',
@@ -12,6 +13,8 @@ import { GlobalErrorService } from '../../core/services/global-error.service';
 export class MainLayoutComponent implements OnInit {
   protected readonly status = inject(AppStatusService);
   protected readonly globalError = inject(GlobalErrorService);
+  protected readonly authService = inject(AuthenticationService);
+  private readonly router = inject(Router);
   private readonly destroyRef = inject(DestroyRef);
 
   protected readonly runBusy = signal(false);
@@ -37,5 +40,10 @@ export class MainLayoutComponent implements OnInit {
 
   protected dismissError(): void {
     this.globalError.clear();
+  }
+
+  protected logout(): void {
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 }

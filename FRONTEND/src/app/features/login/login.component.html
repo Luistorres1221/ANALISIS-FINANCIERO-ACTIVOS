@@ -1,0 +1,86 @@
+<div class="login-container">
+  <div class="login-box">
+    <!-- Logo y Branding de QUANTA LTDA -->
+    <div class="logo-section">
+      <div class="logo-circle">
+        <svg class="logo-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" stroke-width="2" />
+          <path d="M35 50 L50 35 L65 50 L50 65 Z" fill="currentColor" opacity="0.8" />
+          <circle cx="50" cy="50" r="8" fill="currentColor" />
+        </svg>
+      </div>
+      <h1 class="company-name">QUANTA LTDA</h1>
+      <p class="company-tagline">Análisis Financiero Inteligente</p>
+    </div>
+
+    <!-- Formulario de Login -->
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+      <!-- Mensaje de Error -->
+      <div *ngIf="error" class="error-message">
+        <span class="error-icon">⚠</span>
+        {{ error }}
+      </div>
+
+      <!-- Campo Usuario -->
+      <div class="form-group">
+        <label for="username" class="form-label">Usuario</label>
+        <input
+          id="username"
+          type="text"
+          class="form-input"
+          [class.is-invalid]="submitted && f['username'].errors"
+          formControlName="username"
+          placeholder="Ingrese su usuario"
+          [disabled]="loading"
+        />
+        <div *ngIf="submitted && f['username'].errors" class="form-error">
+          <span *ngIf="f['username'].errors['required']">El usuario es requerido</span>
+          <span *ngIf="f['username'].errors['minlength']">El usuario debe tener al menos 3 caracteres</span>
+        </div>
+      </div>
+
+      <!-- Campo Contraseña -->
+      <div class="form-group">
+        <label for="password" class="form-label">Contraseña</label>
+        <input
+          id="password"
+          type="password"
+          class="form-input"
+          [class.is-invalid]="submitted && f['password'].errors"
+          formControlName="password"
+          placeholder="Ingrese su contraseña"
+          [disabled]="loading"
+        />
+        <div *ngIf="submitted && f['password'].errors" class="form-error">
+          <span *ngIf="f['password'].errors['required']">La contraseña es requerida</span>
+          <span *ngIf="f['password'].errors['minlength']">La contraseña debe tener al menos 6 caracteres</span>
+        </div>
+      </div>
+
+      <!-- Botón Iniciar Sesión -->
+      <button
+        type="submit"
+        class="btn-login"
+        [disabled]="loading"
+      >
+        <span *ngIf="!loading" class="btn-text">Iniciar Sesión</span>
+        <span *ngIf="loading" class="btn-loading">
+          <span class="spinner"></span>
+          Conectando...
+        </span>
+      </button>
+    </form>
+
+    <!-- Pie de página -->
+    <div class="login-footer">
+      <p class="footer-text">© 2024 QUANTA LTDA - Todos los derechos reservados</p>
+    </div>
+  </div>
+
+  <!-- Fondo decorativo -->
+  <div class="background-decoration">
+    <div class="decoration-circle decoration-1"></div>
+    <div class="decoration-circle decoration-2"></div>
+    <div class="decoration-circle decoration-3"></div>
+  </div>
+</div>
